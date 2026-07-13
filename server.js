@@ -234,6 +234,13 @@ async function sendMail(payload) {
   const smtpPort = Number(process.env.SMTP_PORT || 465);
   const secure = process.env.SMTP_SECURE !== "false";
 
+  console.log("[Mail Debug] SMTP_HOST:", host ? "已设置" : "未设置");
+  console.log("[Mail Debug] SMTP_USER:", user ? "已设置" : "未设置");
+  console.log("[Mail Debug] SMTP_PASS:", pass ? "已设置" : "未设置");
+  console.log("[Mail Debug] SMTP_FROM:", from ? "已设置" : "未设置");
+  console.log("[Mail Debug] SMTP_PORT:", smtpPort);
+  console.log("[Mail Debug] SMTP_SECURE:", secure);
+
   if (!host || !user || !pass || !from) {
     throw new Error("请配置 SMTP_HOST、SMTP_USER、SMTP_PASS 和 SMTP_FROM");
   }
