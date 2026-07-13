@@ -122,6 +122,9 @@ async function callKimi(payload) {
     throw new Error("请先配置 KIMI_API_KEY 或 MOONSHOT_API_KEY");
   }
 
+  console.log("[Kimi Debug] 开始调用 Kimi API...");
+  console.log("[Kimi Debug] 请求参数:", { mood: payload.mood, day: payload.day, time: payload.time, food: payload.food });
+
   const response = await fetch(moonshotBaseUrl, {
     method: "POST",
     headers: {
@@ -148,17 +151,28 @@ async function callKimi(payload) {
   });
 
   const data = await response.json().catch(() => ({}));
+  console.log("[Kimi Debug] API 响应状态:", response.status);
+  
   if (!response.ok) {
+    console.error("[Kimi Debug] API 调用失败:", data.error?.message || "未知错误");
     throw new Error(data.error?.message || "Kimi API 调用失败");
   }
 
   const content = data.choices?.[0]?.message?.content || "";
+  console.log("[Kimi Debug] Kimi 原始返回内容:", content);
+  
   const plan = safeJsonParse(content);
   if (!plan) {
+    console.error("[Kimi Debug] 解析 JSON 失败，原始内容:", content);
     throw new Error("Kimi 返回内容不是有效 JSON");
   }
 
-  return normalizePlan(plan, payload);
+  console.log("[Kimi Debug] 解析后的计划:", JSON.stringify(plan, null, 2));
+  
+  const normalized = normalizePlan(plan, payload);
+  console.log("[Kimi Debug] 规范化后的计划:", JSON.stringify(normalized, null, 2));
+  
+  return normalized;
 }
 
 function normalizePlan(plan, payload) {
