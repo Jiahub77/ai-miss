@@ -1,0 +1,20 @@
+{
+  "name": "oops-its-a-date",
+  "version": "1.0.0",
+  "description": "一台小小的约会引擎，负责把你的选择推理成一张可发送的见面卡",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "dating",
+    "ai",
+    "planning"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
