@@ -9,7 +9,7 @@ const root = __dirname;
 loadEnvFile(path.join(root, ".env"));
 
 const port = Number(process.env.PORT || 4173);
-const host = process.env.HOST || "127.0.0.1";
+const host = process.env.HOST || "0.0.0.0";
 const recipientEmail = process.env.RECIPIENT_EMAIL || "2045083228@qq.com";
 const moonshotApiKey = process.env.KIMI_API_KEY || process.env.MOONSHOT_API_KEY || "";
 const moonshotBaseUrl = process.env.KIMI_BASE_URL || "https://api.moonshot.cn/v1/chat/completions";
