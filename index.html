@@ -1,170 +1,59 @@
 <!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oops, It’s a Date</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main class="stage" aria-live="polite">
-      <span class="float-mark mark-one">✿</span>
-      <span class="float-mark mark-two">♡</span>
-      <span class="float-mark mark-three">✽</span>
-      <aside class="app-rail" aria-label="约会生成进度">
-        <span data-step="invite">邀</span>
-        <span data-step="mood">选</span>
-        <span data-step="generating">AI</span>
-        <span data-step="result">卡</span>
-      </aside>
-
-      <section class="scene-card invite-card is-active" id="inviteScene" aria-label="约会邀请">
-        <div class="cover-frame">
-          <img src="assets/cat-chip-cover.svg" alt="两只叼着薯片的小猫抽象插画" />
-        </div>
-        <p class="eyebrow">Tonight, maybe?</p>
-        <h1 class="invite-title">
-          <span>Oops, It’s</span>
-          <span>a Date</span>
-        </h1>
-        <p class="subtitle">一台小小的约会引擎，负责把你的选择推理成一张可发送的见面卡。</p>
-        <div class="runaway-zone" id="runawayZone">
-          <button class="yes-btn" id="yesButton" type="button">好啊，听你安排 ❤</button>
-          <button class="shy-btn" id="shyButton" type="button">我再装一下矜持</button>
-        </div>
-        <p class="hint" id="inviteHint">偷偷提示：右边那个按钮有点嘴硬。</p>
-      </section>
-
-      <section class="scene-card confirm-card" id="confirmScene" aria-label="二次确认">
-        <div class="badge">✨</div>
-        <p class="eyebrow">Deal?</p>
-        <h2>那就说好了？</h2>
-        <p class="subtitle">我负责把今天变得不普通，你负责准时出现。</p>
-        <div class="stack-actions">
-          <button class="primary-btn" id="dealButton" type="button">说好了</button>
-          <button class="quiet-btn" id="expectButton" type="button">我有点期待了</button>
-        </div>
-      </section>
-
-      <section class="scene-card pick-card" id="moodScene" aria-label="选择约会氛围">
-        <p class="eyebrow">Step 1</p>
-        <h2>今天想怎么见面？</h2>
-        <p class="subtitle">不用正式，选一个最像你们现在状态的氛围。</p>
-        <div class="option-grid" id="moodOptions">
-          <button class="option-card" type="button" data-mood="轻松散步">轻松散步</button>
-          <button class="option-card" type="button" data-mood="一起吃点好的">一起吃点好的</button>
-          <button class="option-card" type="button" data-mood="看电影不说话也行">看电影不说话也行</button>
-          <button class="option-card" type="button" data-mood="找个地方慢慢聊">找个地方慢慢聊</button>
-          <button class="option-card" type="button" data-mood="有点暧昧">有点暧昧</button>
-          <button class="option-card" type="button" data-mood="像第一次约会">像第一次约会</button>
-        </div>
-      </section>
-
-      <section class="scene-card pick-card" id="timeScene" aria-label="选择约会时间">
-        <p class="eyebrow">Step 2</p>
-        <h2>你什么时候可以被我占用一下？</h2>
-        <div class="option-grid compact" id="dayOptions">
-          <button class="option-card" type="button" data-day="今天晚上">今天晚上</button>
-          <button class="option-card" type="button" data-day="明天">明天</button>
-          <button class="option-card" type="button" data-day="这个周末">这个周末</button>
-          <button class="option-card" type="button" data-day="你来定">你来定</button>
-        </div>
-        <div class="option-grid compact second-grid" id="timeOptions">
-          <button class="option-card" type="button" data-time="午后">午后</button>
-          <button class="option-card" type="button" data-time="傍晚">傍晚</button>
-          <button class="option-card" type="button" data-time="晚饭后">晚饭后</button>
-          <button class="option-card" type="button" data-time="夜一点也行">夜一点也行</button>
-        </div>
-        <button class="primary-btn full" id="timeNextButton" type="button" disabled>下一步</button>
-      </section>
-
-      <section class="scene-card pick-card" id="foodScene" aria-label="选择吃什么">
-        <p class="eyebrow">Step 3</p>
-        <h2>吃点什么比较像我们？</h2>
-        <p class="subtitle">选不出来也没关系，可以交给 Kimi 猜。</p>
-        <div class="food-grid" id="foodOptions">
-          <button class="food-card" type="button" data-food="甜品">🍰<span>甜品</span></button>
-          <button class="food-card" type="button" data-food="火锅">🍲<span>火锅</span></button>
-          <button class="food-card" type="button" data-food="烤肉">🥩<span>烤肉</span></button>
-          <button class="food-card" type="button" data-food="日料">🍣<span>日料</span></button>
-          <button class="food-card" type="button" data-food="咖啡">☕<span>咖啡</span></button>
-          <button class="food-card" type="button" data-food="让 AI 猜">🎲<span>让 AI 猜</span></button>
-        </div>
-      </section>
-
-      <section class="scene-card generating-card" id="generatingScene" aria-label="生成约会计划">
-        <div class="loader-heart">♡</div>
-        <p class="eyebrow">Kimi reasoning</p>
-        <h2>正在让 AI 推理这次见面...</h2>
-        <p class="subtitle" id="loadingText">正在分析氛围、时间和食物之间的关系。</p>
-        <div class="progress-track">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-      </section>
-
-      <section class="scene-card result-card" id="resultScene" aria-label="约会方案">
-        <div class="result-head">
-          <div>
-            <p class="eyebrow">Our Plan</p>
-            <h2 id="resultTitle">好了，这是我们的见面计划。</h2>
-          </div>
-          <span id="scoreBadge">94%</span>
-        </div>
-        <div class="date-menu">
-          <div>
-            <span>WHEN</span>
-            <strong id="whenText">今天晚上 · 傍晚</strong>
-          </div>
-          <div>
-            <span>VIBE</span>
-            <strong id="vibeText">轻松散步</strong>
-          </div>
-          <div>
-            <span>MENU</span>
-            <strong id="foodText">甜品</strong>
-          </div>
-        </div>
-        <div class="timeline" id="timeline"></div>
-        <article class="reason-card">
-          <p class="card-label">AI 推理</p>
-          <p id="reasoningText">我会根据你们的氛围、时间和吃什么，给出一个不尴尬的安排。</p>
-        </article>
-        <article class="note-card">
-          <p class="card-label">我准备说的话</p>
-          <p id="openingLine">那天见。别迟到，我会假装没有很期待。</p>
-          <button class="ghost-btn" id="copyButton" type="button">复制这句话</button>
-        </article>
-        <div class="task-grid">
-          <article>
-            <p class="card-label">你的任务</p>
-            <strong id="hisTask">准时出现，然后夸我今天好看。</strong>
-          </article>
-          <article>
-            <p class="card-label">我的小心机</p>
-            <strong id="myTrick">准备一个不太明显但你会记住的小惊喜。</strong>
-          </article>
-        </div>
-        <div class="stack-actions result-actions">
-          <button class="primary-btn" id="sendButton" type="button">把我的选择发给你</button>
-          <button class="primary-btn" id="checklistButton" type="button">进入出门清单</button>
-          <button class="quiet-btn" id="againButton" type="button">重新安排一次</button>
-        </div>
-      </section>
-
-      <section class="scene-card checklist-card" id="checklistScene" aria-label="出门清单">
-        <div class="result-head">
-          <div>
-            <p class="eyebrow">Before Date</p>
-            <h2>出门前确认</h2>
-          </div>
-          <span id="doneCount">0/5</span>
-        </div>
-        <div class="checklist" id="checklist"></div>
-        <button class="primary-btn full" id="backResultButton" type="button">回到约会卡片</button>
-      </section>
-    </main>
-
-    <div class="toast" id="toast" role="status" aria-live="polite">已复制</div>
-    <script src="app.js"></script>
-  </body>
-</html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff"><meta name="description" content="农历八月廿三（2026年10月3日），潮州市潮安区沙溪镇维也纳酒店三楼。好久不见，婚礼见。"><title>好久不见，婚礼见 · 2026.10.03</title><link rel="stylesheet" href="styles.css?v=uploaded-photos"></head>
+<body>
+<main id="invitation">
+ <section id="opening" class="opening" aria-label="婚礼邀请">
+  <div class="hero-photo"><img src="assets/couple-upload-01.jpg" alt="新人在红色背景前牵手合照" width="1440" height="2160" fetchpriority="high"></div>
+  <div class="masthead"><img class="xi" src="assets/ref2-xi.png" alt="囍" width="263" height="200"><img class="script wedding-script" src="assets/ref2-script-wedding.png" alt="Wedding"><p>HI~亲爱的家人朋友们</p></div>
+  <div class="intro-grid reveal">
+   <div class="couple"><h1>【好久不见，婚礼见】</h1><p class="english">GROOM</p><p data-groom></p><p class="english">BRIDE</p><p data-bride></p></div>
+   <div class="letter"><p>当我们写下这段文字的时候<br>才意识到<br>我们发出的不只是婚礼邀约<br>更是邀请组成我们所有人生阶段<br>重要记忆的你们<br>在匆匆人生中的三万多天<br>我们赋予那一天不一样的意义<br>来一场欢畅难忘的聚会</p><p class="reunion">期待和您的重逢……</p></div>
+  </div>
+ </section>
+ <section id="welcome" class="welcome" aria-label="欢迎来见证我们的婚礼">
+  <p class="small-slogan reveal">小小的喜 · 大大的欢喜<br><i>welcome to our wedding</i></p>
+  <img class="welcome-photo reveal" src="assets/couple-upload-06.jpg" alt="新人在浅灰背景前的白纱合照" width="1280" height="1920">
+  <div class="welcome-caption reveal"><p class="english">WELCOME<br>TO<br>OUR<br>WEDDING</p><div><p class="date-text" data-dotted-date></p><p data-lunar-date></p><p>见证我们 / 爱的启程</p><span class="small-xi" aria-hidden="true">囍</span></div></div>
+ </section>
+ <section id="wedding-day" class="wedding-day" aria-label="婚期日历">
+  <div class="cake-image"><img src="assets/couple-upload-11.jpg" alt="新人在白色花艺前牵手合照" width="1440" height="2160"></div>
+  <div class="calendar-panel reveal"><div class="calendar-heading"><div><span class="month" data-month></span><span class="day-caption"> / <span data-day></span></span></div><span class="year">−<span data-year></span>−</span></div><div id="calendar" class="calendar" aria-label="婚期日历"></div></div>
+ </section>
+ <section id="our-story" class="story" aria-label="我们的邀请">
+  <div class="story-row first-story reveal"><img src="assets/couple-upload-13.jpg" alt="新郎轻吻新娘额头的近景" width="1440" height="2160"><div><p class="english">LOVE YOU<br>FOREVER</p><p>从此<br>我的故事里<br>主角是你<br>篇章是你<br>幸福的结局也是你</p></div></div>
+  <img class="script invitation-script reveal" src="assets/ref2-script-invitation.png" alt="Invitation">
+  <div class="story-row second-story reveal"><div><p>婚书上写下<br>什么并不打紧<br>哪怕白纸一张<br>干干净净<br>只要最终落款的<br>是我和你的姓名</p><p class="english">LOVE NEVER<br>FAILS</p></div><img src="assets/couple-upload-04.jpg" alt="新人在暖光窗边的合照" width="1280" height="1920"></div>
+ </section>
+ <section id="love" class="love" aria-label="婚礼倒计时">
+  <img class="full-photo reveal" src="assets/couple-upload-02.jpg" alt="新娘手持花束，新郎温柔注视" width="1440" height="960">
+  <div class="love-heading"><i>Love has no definition,<br>but you are the only one.</i><img class="script" src="assets/ref2-script-love.png" alt="Love"></div>
+  <div class="countdown-layout reveal"><div id="countdown" class="countdown" role="timer" aria-label="距离婚礼的时间"><div><span data-unit="days">00</span><small>天</small></div><div><span data-unit="hours">00</span><small>时</small></div><div><span data-unit="minutes">00</span><small>分</small></div><div><span data-unit="seconds">00</span><small>秒</small></div></div><img src="assets/couple-upload-03.jpg" alt="新人在红色背景前的俏皮近景" width="1440" height="960"></div>
+  <p id="countdown-status" class="sr-only" aria-live="polite"></p>
+  <p class="love-copy reveal">最美的爱情，没有天荒，也没有地老<br>只是想与你相伴一生，仅此而已</p>
+ </section>
+ <section id="together" class="together" aria-label="往后余生">
+  <img class="full-photo reveal" src="assets/couple-upload-07.jpg" alt="新娘坐在新郎身旁的婚纱照" width="1280" height="1920">
+  <img class="uploaded-memory reveal" src="assets/couple-upload-05.jpg" alt="新人在复古室内挥手，花瓣飘落" width="1280" height="1920">
+  <h2 class="ruled-heading reveal">WELCOME</h2>
+  <p class="together-copy reveal">一路走来<br>我们看过春花<br>听过夏蝉<br>终于在这个收获的季节<br>收获了彼此<br>从此<br>有人问我粥可温<br>有人与我立黄昏<br>这世间最平凡的幸福<br>便是我们的归处</p>
+  <div class="happiness-mark reveal"><span>长日欣喜</span><img src="assets/ref2-xi.png" alt="囍" width="263" height="200"><span>四季与你</span></div>
+  <div class="double-photo confetti-zone reveal"><img src="assets/couple-upload-09.jpg" alt="新郎身着白色礼服手持花束" width="1280" height="1920"><img src="assets/couple-upload-10.jpg" alt="新娘披着头纱手持花束" width="960" height="1440"><div class="petals" aria-hidden="true"></div></div>
+ </section>
+ <section id="details" class="details" aria-label="婚礼时间与地址">
+  <h2 class="english reveal">婚礼时间 / TIME</h2><p class="detail-date reveal" data-full-date></p><p class="reveal" data-solar-date></p>
+  <h2 class="english venue-heading reveal">婚礼地址 / ADDRESS</h2><h3 class="venue-name reveal" data-venue></h3><p class="address reveal" data-address></p>
+  <div class="map-card reveal"><a id="map-open" class="map-open" aria-label="在地图中打开婚礼酒店"><svg viewBox="0 0 350 165" role="img" aria-label="婚礼酒店位置示意，并非真实地图"><path fill="#dadbc0" d="M8 37 80 4 136 25 147 81 64 113 2 87Z M221 33 304 10 345 36 339 105 255 118Z"/><g fill="none" stroke="#fcf6e9"><path stroke-width="15" d="M4 113 76 88 157 59 247 63 347 34"/><path stroke-width="12" d="M150 5 163 57 179 123"/></g><circle cx="163" cy="51" r="10" fill="#792330"/><circle cx="163" cy="51" r="4" fill="#f2e5cc"/><text x="20" y="53" fill="#647151" font-size="13">花园</text><text x="194" y="30" fill="#792330" font-size="16">维也纳酒店</text><text x="207" y="155" fill="#81767b" font-size="11">位置示意 · 非真实地图</text></svg></a><a id="navigate" aria-disabled="true">导航到婚礼现场 ↗</a></div>
+ </section>
+ <section id="ending" class="ending" aria-label="感谢你的到来">
+  <p class="ending-copy reveal">最美好的爱情<br>不是玫瑰与惊喜<br>而是你来了以后<br>再也没走<br>所谓岁月静好</p>
+  <div class="thanks-mark reveal"><img class="script" src="assets/ref2-script-thanks.png" alt="Thank you"><p data-dotted-date></p></div>
+  <div class="ending-photo confetti-zone"><img src="assets/couple-upload-12.jpg" alt="新人在白色廊柱与花艺间相拥" width="1440" height="960"><div class="petals" aria-hidden="true"></div></div>
+  <p class="closing-caption">好久不见，婚礼见。</p>
+ </section>
+</main>
+<div class="floating-tools" aria-label="浏览控制"><button id="music" class="music" aria-label="播放配乐" aria-pressed="false">♫</button><button id="autoplay" class="auto-scroll" aria-label="暂停自动滚动" aria-pressed="true">Ⅱ</button></div>
+<button id="back-top" aria-label="返回顶部" hidden>↑</button>
+<p id="status" class="sr-only" role="status"></p>
+<audio id="audio" src="assets/ref2-music.m4a" preload="none" loop></audio>
+<script src="config.js?v=floor-3"></script><script src="app.js?v=floor-3"></script>
+</body></html>
